@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tool - Ielts speaking</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+/* VOICE everyday study tool, calm and encouraging
+   IDEA an exam cue card plus a highlighter-marked vocabulary notebook
+   PICTURE the live practice card: yellow cue card, answer box with vocab chips lighting up, band-score feedback bars
+   COLOUR white ground, cobalt band, highlighter yellow, coral for fixes, green for correct
+   TYPE Be Vietnam Pro 800 display + Be Vietnam Pro text
+   LAYOUT laptop: cobalt band with title and topic chips, then practice (wide) beside a sticky vocab notebook; phone: title, topics, practice, vocab */
+:root{color-scheme:light dark;--bg:light-dark(#ffffff,#0d1029);--ink:light-dark(#14172b,#eef0ff);--mute:light-dark(#5b6080,#a6acd4);--band:light-dark(#2337c6,#1a2894);--cta:light-dark(#2337c6,#4a5ff2);--panel:light-dark(#f2f4ff,#151a3c);--card:light-dark(#ffffff,#11153a);--line:light-dark(#d5daf2,#2c3368);--hl:#ffe14d;--hls:light-dark(#ffe14d,rgba(255,225,77,.38));--coral:light-dark(#c8371e,#ff8466);--ok:light-dark(#0b7d50,#45d79b)}
+:root[data-theme=light]{color-scheme:light}
+:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.55 "Be Vietnam Pro",system-ui,sans-serif;overflow-x:clip}
+button,textarea,input{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--cta);outline-offset:2px}
+.top{background:var(--band);color:#fff;padding:clamp(24px,4vw,48px) max(5vw,16px) 22px}
+.wrap{max-width:1240px;margin:0 auto}
+h1{font-size:clamp(32px,5vw,48px);line-height:1.05;letter-spacing:-.02em;font-weight:800;margin:0 0 8px;text-wrap:balance}
+.sub{margin:0;max-width:60ch;color:rgba(255,255,255,.86)}
+.topics{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
+.tp{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:6px 14px;border-radius:999px;border:1px solid rgba(255,255,255,.3);background:rgba(255,255,255,.08);color:#fff;font-weight:500;font-size:15px;white-space:nowrap}
+.tp b{font-weight:800}
+.tp small{font-size:13px;opacity:.75;font-variant-numeric:tabular-nums}
+.tp:hover{background:rgba(255,255,255,.18)}
+.tp.on{background:var(--hl);border-color:var(--hl);color:#1b1a0a}
+.main{max-width:1240px;margin:0 auto;padding:28px max(5vw,16px) 40px;display:grid;gap:28px;grid-template-columns:minmax(0,1fr)}
+@media(min-width:960px){.main{grid-template-columns:minmax(0,1.75fr) minmax(0,1fr);align-items:start}.vocab{position:sticky;top:16px;max-height:calc(100vh - 32px);overflow:auto}}
+.phead{display:flex;flex-wrap:wrap;align-items:end;justify-content:space-between;gap:12px;margin-bottom:16px}
+.tnum{font-size:14px;font-weight:700;color:var(--cta)}
+h2{font-size:clamp(26px,3.4vw,36px);line-height:1.1;letter-spacing:-.02em;margin:2px 0 0;font-weight:800}
+.tvi{margin:2px 0 0;color:var(--mute)}
+.tabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border:1.5px solid var(--line);border-radius:12px;padding:4px;gap:4px;margin-bottom:18px}
+.tabs button{min-height:44px;border:0;border-radius:9px;background:transparent;font-weight:700;font-size:15px}
+.tabs button:hover{background:var(--panel)}
+.tabs button.on{background:var(--ink);color:var(--bg)}
+.cue{background:var(--hl);color:#1b1a0a;border-radius:16px;padding:20px 22px 22px;box-shadow:0 3px 0 rgba(0,0,0,.12)}
+.cmeta{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:14px;font-weight:700}
+.nav{display:flex;gap:6px}
+.nb,.cue .ic{width:44px;height:44px;border-radius:10px;border:1.5px solid rgba(0,0,0,.25);background:rgba(255,255,255,.45);font-size:22px;line-height:1;display:inline-grid;place-items:center;color:#1b1a0a}
+.nb:hover,.cue .ic:hover{background:#fff}
+.q{font-size:clamp(20px,2.6vw,26px);line-height:1.3;font-weight:700;margin:12px 0 0;letter-spacing:-.01em}
+.hint{margin:12px 0 0;font-size:15px}
+.cue mark{background:#fff;color:#1b1a0a;padding:1px 6px;border-radius:4px;font-weight:700}
+.cue ul{margin:8px 0 6px;padding-left:22px;font-size:17px}
+.cue .say{font-size:15px;font-weight:700;margin:12px 0 0}
+.qrow{display:flex;gap:10px;align-items:flex-start;justify-content:space-between}
+.p2top{display:grid;gap:16px}
+@media(min-width:720px){.p2top{grid-template-columns:minmax(0,1.5fr) minmax(0,1fr)}}
+.timer{border:1.5px solid var(--line);border-radius:16px;padding:18px;background:var(--panel);display:flex;flex-direction:column;gap:10px}
+.tval{font-size:clamp(44px,6vw,60px);font-weight:800;line-height:1;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.timer[data-ph=talk] .tval{color:var(--coral)}
+.tbar{height:8px;border-radius:9px;background:var(--line);overflow:hidden}
+.tbar i{display:block;height:100%;width:0;background:var(--cta);transition:width .9s linear}
+.tph{margin:0;font-size:14px;color:var(--mute)}
+.tbtns{display:flex;flex-wrap:wrap;gap:8px}
+.pick{margin-top:14px}
+.pickh{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px}
+.dots{display:grid;grid-template-columns:repeat(15,minmax(0,1fr));gap:5px}
+@media(max-width:600px){.dots{grid-template-columns:repeat(10,minmax(0,1fr))}}
+.dot{height:34px;border-radius:8px;border:1.5px solid var(--line);background:var(--card);font-size:13px;font-weight:700;font-variant-numeric:tabular-nums;padding:0;color:var(--mute)}
+.dot:hover{border-color:var(--cta);color:var(--ink)}
+.dot.ok{background:color-mix(in srgb,var(--ok) 22%,var(--card));border-color:var(--ok);color:var(--ink)}
+.dot.cur{background:var(--hl);border-color:var(--hl);color:#1b1a0a}
+.comp{margin-top:18px;display:flex;flex-direction:column;gap:10px}
+.lab{font-size:14px;font-weight:700;color:var(--mute)}
+textarea{width:100%;min-height:150px;resize:vertical;border:1.5px solid var(--line);border-radius:12px;padding:14px;background:var(--card);font-size:16px;line-height:1.6}
+#notes{min-height:84px}
+textarea:focus{border-color:var(--cta);outline:none}
+.partial{color:var(--mute);font-size:14px;min-height:0}
+.partial:empty{display:none}
+.crow{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between}
+.wc{font-size:14px;color:var(--mute);font-variant-numeric:tabular-nums}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 18px;border-radius:10px;border:1.5px solid var(--line);background:var(--card);font-weight:700;font-size:15px}
+.btn:hover{border-color:var(--cta)}
+.btn.primary{background:var(--cta);border-color:var(--cta);color:#fff}
+.btn.primary:hover{filter:brightness(1.1)}
+.btn:disabled{opacity:.6;cursor:wait}
+.btn.sm{min-height:38px;padding:0 12px;font-size:14px}
+.mic.live{background:var(--coral);border-color:var(--coral);color:#fff}
+@media(prefers-reduced-motion:no-preference){.mic.live svg{animation:pulse 1.1s ease-in-out infinite}}
+@keyframes pulse{50%{transform:scale(1.25)}}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.chip{min-height:40px;padding:4px 12px;border-radius:999px;border:1.5px dashed var(--line);background:transparent;font-size:14px;font-weight:500}
+.chip:hover{border-color:var(--cta)}
+.chip.on{background:var(--hl);border:1.5px solid var(--hl);color:#1b1a0a}
+.acts{display:flex;flex-wrap:wrap;gap:10px}
+#out:empty{display:none}
+.fb{border:1.5px solid var(--line);border-radius:16px;padding:20px;background:var(--card)}
+.fb h4{margin:18px 0 6px;font-size:15px}
+.fb h4:first-child{margin-top:0}
+.fbtop{display:grid;grid-template-columns:auto minmax(0,1fr);gap:22px;align-items:center}
+.bnum{font-size:clamp(52px,7vw,68px);font-weight:800;line-height:.95;color:var(--cta);font-variant-numeric:tabular-nums;letter-spacing:-.03em}
+.blab{font-size:13px;color:var(--mute);font-weight:700}
+.bars{display:flex;flex-direction:column;gap:8px}
+.bar{display:grid;grid-template-columns:minmax(0,9.5em) minmax(0,1fr) 2.4em;gap:10px;align-items:center;font-size:14px}
+.track{height:10px;border-radius:9px;background:var(--panel);overflow:hidden;border:1px solid var(--line)}
+.track i{display:block;height:100%;background:var(--cta);border-radius:9px}
+.bar b{text-align:right;font-variant-numeric:tabular-nums}
+@media(max-width:520px){.fbtop{grid-template-columns:1fr}.bar{grid-template-columns:minmax(0,8em) minmax(0,1fr) 2.4em}}
+.sum{margin:14px 0 0;font-size:17px}
+.fb ul{margin:0;padding-left:20px}
+.errs{list-style:none;padding:0!important;display:flex;flex-direction:column;gap:10px}
+.errs li{border-left:3px solid var(--coral);padding:4px 0 4px 12px}
+.wrong{color:var(--coral);text-decoration:line-through}
+.right{color:var(--ok);font-weight:700}
+.errs small{display:block;color:var(--mute);font-size:14px}
+.better{background:var(--panel);border-radius:12px;padding:14px 16px}
+.better p{margin:0 0 10px;white-space:pre-wrap}
+.bb{display:flex;gap:8px;flex-wrap:wrap}
+.tip{margin:16px 0 0}
+.note{margin:14px 0 0;font-size:13px;color:var(--mute)}
+.checks{list-style:none;padding:0!important;display:flex;flex-direction:column;gap:8px}
+.checks li{padding-left:28px;position:relative}
+.checks li::before{content:"";position:absolute;left:4px;top:.45em;width:12px;height:12px;border-radius:50%;background:var(--ok)}
+.checks li.no::before{background:var(--coral)}
+.warn,.wait{margin:0;padding:12px 16px;border-radius:12px;background:var(--panel)}
+.mtext{white-space:pre-wrap}
+.vocab{background:var(--panel);border-radius:18px;padding:20px}
+.vhead{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.vhead h3{margin:0;font-size:22px;letter-spacing:-.01em}
+.vcount{font-size:14px;color:var(--mute);font-weight:700;white-space:nowrap}
+.vtip{font-size:14px;color:var(--mute);margin:4px 0 10px}
+.hide{display:flex;align-items:center;gap:10px;min-height:44px;font-size:15px;font-weight:500;cursor:pointer}
+.hide input{width:20px;height:20px;accent-color:var(--cta)}
+#vlist{list-style:none;margin:6px 0 0;padding:0}
+#vlist li{padding:12px 0;border-top:1px solid var(--line)}
+.vt{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.term{border:0;background:linear-gradient(transparent 58%,var(--hls) 58%);padding:2px 2px;font-weight:700;font-size:17px;text-align:left}
+.term:hover{background:var(--hls)}
+.ic{width:36px;height:36px;border-radius:9px;border:0;background:transparent;display:inline-grid;place-items:center;color:var(--mute)}
+.ic:hover{background:var(--card);color:var(--cta)}
+.lrn{margin-left:auto;min-height:32px;border-radius:999px;border:1.5px solid var(--line);background:transparent;font-size:13px;font-weight:700;padding:2px 10px;color:var(--mute)}
+li.got .lrn{background:var(--ok);border-color:var(--ok);color:#fff}
+li.got .term{background:linear-gradient(transparent 58%,color-mix(in srgb,var(--ok) 35%,transparent) 58%)}
+.vm{font-size:15px;margin-top:2px;transition:filter .2s}
+.hidem .vm{filter:blur(6px);cursor:pointer;user-select:none}
+.hidem li.show .vm{filter:none}
+.ve{margin:4px 0 0;font-size:14px;color:var(--mute);display:flex;gap:4px;align-items:flex-start;justify-content:space-between}
+.ve .ic{width:32px;height:32px;flex:none;margin-top:-4px}
+.foot{max-width:1240px;margin:0 auto;padding:0 max(5vw,16px) 32px;font-size:13px;color:var(--mute)}
+@media(max-width:600px){.topics{flex-wrap:nowrap;overflow-x:auto;margin-inline:-16px;padding:0 16px 4px;scrollbar-width:none}.tabs button{font-size:14px}.cue{padding:16px}}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <h1>Luyện IELTS Speaking</h1>
+    <p class="sub">Mười chủ đề 11–20: học từ vựng, dịch câu Việt → Anh, trả lời Part 1, 2, 3 bằng cách gõ hoặc nói, rồi nhận nhận xét ngay.</p>
+    <nav class="topics" id="topics" aria-label="Chủ đề"></nav>
+  </div>
+</header>
+<main class="main">
+  <section aria-label="Luyện tập">
+    <div class="phead"><div><div class="tnum" id="tnum"></div><h2 id="tname"></h2><p class="tvi" id="tvi"></p></div></div>
+    <div class="tabs" id="tabs" role="tablist">
+      <button data-tab="tr" role="tab">Luyện dịch</button>
+      <button data-tab="p1" role="tab">Part 1</button>
+      <button data-tab="p2" role="tab">Part 2</button>
+      <button data-tab="p3" role="tab">Part 3</button>
+    </div>
+    <div id="stage"></div>
+  </section>
+  <aside class="vocab" aria-label="Từ vựng">
+    <div class="vhead"><h3>Sổ từ vựng</h3><span class="vcount" id="vcount"></span></div>
+    <p class="vtip">Chạm vào cụm từ để chèn vào câu trả lời; bấm loa để nghe.</p>
+    <label class="hide"><input type="checkbox" id="hideM"> Ẩn nghĩa để tự kiểm tra</label>
+    <ul id="vlist"></ul>
+  </aside>
+</main>
+<footer class="foot"><p id="ai">Nhận xét nhanh chạy ngay trên trang. Mở trang trong Claude để được chấm band chi tiết và xem bài mẫu.</p></footer>
+<script>
+{
+const T=[
+{n:"11",en:"Hometown & Accommodation",vi:"Quê hương & Nhà ở",
+v:[["bustling city","thành phố nhộn nhịp, sôi động","Ho Chi Minh City is a bustling city that never really sleeps.","bustling (city|cities)"],["tranquil neighbourhood","khu dân cư yên tĩnh","I live in a tranquil neighbourhood where you can hear birds in the morning."],["cost of living","chi phí sinh hoạt","The cost of living in Hanoi has gone up a lot recently."],["spacious apartment","căn hộ rộng rãi","My parents finally moved into a spacious apartment with three bedrooms."],["on the outskirts","ở vùng ven, ngoại ô","Housing is much cheaper on the outskirts of the city."],["high-rise building","tòa nhà cao tầng","My district is now full of high-rise buildings."],["sense of community","tinh thần cộng đồng, tình làng nghĩa xóm","There is a strong sense of community in my alley."],["urban sprawl","đô thị hóa tràn lan","Urban sprawl has replaced many rice fields around my hometown."]],
+tr:[["Tôi lớn lên ở một thành phố nhộn nhịp, nơi lúc nào cũng đông đúc và ồn ào.", "I grew up in a bustling city, where it is always crowded and noisy."],
+["Chi phí sinh hoạt ở Hà Nội ngày càng đắt đỏ, đặc biệt là tiền thuê nhà.", "The cost of living in Hanoi is getting more and more expensive, especially rent."],
+["Gia đình tôi vừa chuyển đến một căn hộ rộng rãi ở ngoại ô thành phố.", "My family has just moved into a spacious apartment on the outskirts of the city."],
+["Tôi thích sống ở một khu phố yên tĩnh hơn là ở trung tâm thành phố.", "I prefer living in a tranquil neighbourhood to living in the city centre."],
+["Quê tôi từng là một thị trấn nhỏ, nhưng giờ đã trở thành một thành phố nhộn nhịp.", "My hometown used to be a small town, but now it has become a bustling city."],
+["Sống ở một thành phố nhộn nhịp rất tiện lợi, nhưng đôi khi khá căng thẳng.", "Living in a bustling city is very convenient, but it can be quite stressful at times."],
+["Nhiều người trẻ chuyển đến các thành phố nhộn nhịp để tìm việc làm tốt hơn.", "Many young people move to bustling cities to find better jobs."],
+["Tôi sống ở một khu phố yên tĩnh nên có thể tập trung học bài vào buổi tối.", "I live in a tranquil neighbourhood, so I can concentrate on my studies in the evening."],
+["Khi về già, tôi muốn sống ở một khu phố yên tĩnh gần biển.", "When I get older, I would like to live in a tranquil neighbourhood near the sea."],
+["Chi phí sinh hoạt cao khiến nhiều gia đình trẻ khó mua được nhà.", "The high cost of living makes it difficult for many young families to buy a house."],
+["So với Hà Nội, chi phí sinh hoạt ở quê tôi thấp hơn nhiều.", "Compared to Hanoi, the cost of living in my hometown is much lower."],
+["Nhiều sinh viên phải làm thêm vì chi phí sinh hoạt ở thành phố quá cao.", "Many students have to work part-time because the cost of living in the city is too high."],
+["Tôi mơ ước có một căn hộ rộng rãi với ban công nhìn ra sông.", "I dream of having a spacious apartment with a balcony overlooking the river."],
+["Một căn hộ rộng rãi ở trung tâm thành phố thường rất đắt.", "A spacious apartment in the city centre is usually very expensive."],
+["Chúng tôi thuê một căn hộ rộng rãi để cả gia đình có thể sống cùng nhau.", "We rent a spacious apartment so that the whole family can live together."],
+["Nhà ở vùng ngoại ô rẻ hơn, nhưng đi vào trung tâm mất nhiều thời gian.", "Houses on the outskirts are cheaper, but it takes a long time to get to the centre."],
+["Nhiều nhà máy mới được xây ở vùng ngoại ô thành phố.", "Many new factories have been built on the outskirts of the city."],
+["Tôi sống ở ngoại ô nên không khí trong lành hơn trong nội thành.", "I live on the outskirts, so the air is fresher than in the inner city."],
+["Ngày càng nhiều tòa nhà cao tầng mọc lên ở thành phố của tôi.", "More and more high-rise buildings are springing up in my city."],
+["Tôi không thích sống trong các tòa nhà cao tầng vì cảm thấy bí bách.", "I don't like living in high-rise buildings because I feel quite claustrophobic."],
+["Các tòa nhà cao tầng giúp tiết kiệm đất ở những thành phố đông dân.", "High-rise buildings help save land in crowded cities."],
+["Ở quê tôi, tình làng nghĩa xóm rất mạnh mẽ; mọi người luôn giúp đỡ nhau.", "In my hometown, there is a strong sense of community; people always help each other."],
+["Sống trong chung cư, người ta thường thiếu tinh thần cộng đồng.", "People living in apartment blocks often lack a sense of community."],
+["Các lễ hội địa phương giúp xây dựng tinh thần cộng đồng.", "Local festivals help to build a sense of community."],
+["Đô thị hóa tràn lan đã làm mất đi nhiều cánh đồng lúa.", "Urban sprawl has destroyed many rice fields."],
+["Chính phủ cần có kế hoạch để kiểm soát tình trạng đô thị hóa tràn lan.", "The government needs a plan to control urban sprawl."],
+["Đô thị hóa tràn lan khiến tình trạng tắc đường ngày càng tệ hơn.", "Urban sprawl is making traffic jams worse and worse."],
+["Người dân ở khu tôi sống rất thân thiện và có tinh thần cộng đồng cao.", "People in my area are very friendly and have a strong sense of community."],
+["Nếu có đủ tiền, tôi sẽ mua một căn hộ rộng rãi ở ngoại ô.", "If I had enough money, I would buy a spacious apartment on the outskirts."],
+["Mặc dù chi phí sinh hoạt cao, tôi vẫn muốn sống ở một thành phố nhộn nhịp như Sài Gòn.", "Despite the high cost of living, I still want to live in a bustling city like Saigon."]],
+p1:["Where is your hometown?","Do you live in a house or an apartment?","What do you like most about the area where you live?","Would you like to move to another place in the future? Why?"],
+p2:{t:"Describe a place where you would like to live in the future.",b:["where it is","what kind of home it would be","who you would live with"],e:"and explain why you would like to live there."},
+p3:["Why do many young people move from the countryside to big cities?","What are the advantages and disadvantages of living in an apartment?","How can governments make housing more affordable?"]},
+{n:"12",en:"Travel & Tourism",vi:"Du lịch",
+v:[["off the beaten track","ít người biết đến, xa các tuyến du lịch quen thuộc","We stayed in a small village off the beaten track in Ha Giang."],["tourist attraction","điểm tham quan du lịch","Ha Long Bay is the most famous tourist attraction in the north."],["mass tourism","du lịch đại trà","Mass tourism can damage the natural environment."],["broaden one's horizons","mở mang tầm mắt","Studying abroad really broadened my horizons."],["itinerary","lịch trình chuyến đi","I usually plan a detailed itinerary before a trip."],["breathtaking scenery","phong cảnh ngoạn mục","Sa Pa has breathtaking scenery, especially in harvest season."],["get away from it all","thoát khỏi bộn bề thường ngày","I go to Da Lat to get away from it all.","away from it all"],["sustainable tourism","du lịch bền vững","Sustainable tourism helps protect local culture."]],
+tr:[["Tôi thích khám phá những nơi ít người biết đến hơn là những điểm du lịch nổi tiếng.", "I prefer exploring places off the beaten track to visiting famous tourist attractions."],
+["Du lịch đại trà đang gây áp lực lớn lên môi trường ở Hội An.", "Mass tourism is putting a lot of pressure on the environment in Hoi An."],
+["Đi du lịch nước ngoài giúp tôi mở mang tầm mắt và hiểu thêm về các nền văn hóa khác.", "Travelling abroad helps me broaden my horizons and understand other cultures better."],
+["Mỗi khi căng thẳng, tôi thường lên Đà Lạt để thoát khỏi bộn bề cuộc sống.", "Whenever I feel stressed, I often go to Da Lat to get away from it all."],
+["Những ngôi làng ít người biết đến thường giữ được nét văn hóa truyền thống.", "Villages off the beaten track often keep their traditional culture."],
+["Năm ngoái, tôi đã đi phượt đến những nơi ít người biết đến ở miền Tây.", "Last year, I went backpacking to places off the beaten track in the Mekong Delta."],
+["Tôi thích đi đến những nơi ít người biết đến vì ở đó không đông đúc.", "I like going to places off the beaten track because they are not crowded."],
+["Phố cổ Hội An là một điểm tham quan nổi tiếng đối với du khách nước ngoài.", "Hoi An Ancient Town is a famous tourist attraction for foreign visitors."],
+["Các điểm tham quan du lịch thường rất đông vào mùa hè.", "Tourist attractions are usually very crowded in the summer."],
+["Vịnh Hạ Long là điểm tham quan mà tôi muốn giới thiệu cho mọi người nhất.", "Ha Long Bay is the tourist attraction I would most like to recommend to everyone."],
+["Du lịch đại trà mang lại nhiều tiền nhưng cũng làm ô nhiễm các bãi biển.", "Mass tourism brings in a lot of money, but it also pollutes the beaches."],
+["Nhiều người dân địa phương phàn nàn về tác động của du lịch đại trà.", "Many local people complain about the impact of mass tourism."],
+["Để hạn chế du lịch đại trà, một số nơi đã giới hạn số lượng khách mỗi ngày.", "To limit mass tourism, some places have restricted the number of visitors per day."],
+["Học một ngôn ngữ mới là cách tuyệt vời để mở mang tầm mắt.", "Learning a new language is a great way to broaden your horizons."],
+["Tôi nghĩ người trẻ nên đi du lịch nhiều hơn để mở mang tầm mắt.", "I think young people should travel more to broaden their horizons."],
+["Chuyến đi Nhật Bản đã thực sự giúp tôi mở mang tầm mắt.", "My trip to Japan really broadened my horizons."],
+["Trước mỗi chuyến đi, tôi luôn lên lịch trình chi tiết.", "Before every trip, I always plan a detailed itinerary."],
+["Lịch trình của chúng tôi dày đặc đến mức chẳng có thời gian nghỉ ngơi.", "Our itinerary was so packed that we had no time to rest."],
+["Tôi thích đi du lịch không có lịch trình cố định để thoải mái khám phá.", "I like travelling without a fixed itinerary so that I can explore freely."],
+["Hà Giang có phong cảnh ngoạn mục với những dãy núi hùng vĩ.", "Ha Giang has breathtaking scenery with majestic mountains."],
+["Tôi đã chụp hàng trăm bức ảnh phong cảnh ngoạn mục ở đó.", "I took hundreds of photos of the breathtaking scenery there."],
+["Du khách đến Sa Pa để ngắm phong cảnh ngoạn mục của ruộng bậc thang.", "Tourists come to Sa Pa to admire the breathtaking scenery of the rice terraces."],
+["Cuối tuần, tôi thường về quê để thoát khỏi bộn bề cuộc sống.", "At weekends, I often go back to my hometown to get away from it all."],
+["Một kỳ nghỉ trên đảo là cách hoàn hảo để thoát khỏi mọi bộn bề.", "A holiday on an island is the perfect way to get away from it all."],
+["Nhiều người đi cắm trại để thoát khỏi bộn bề và rời xa cuộc sống thành phố.", "Many people go camping to get away from it all and escape city life."],
+["Du lịch bền vững giúp bảo vệ môi trường và hỗ trợ người dân địa phương.", "Sustainable tourism helps protect the environment and supports local people."],
+["Chính phủ nên khuyến khích du lịch bền vững thay vì du lịch đại trà.", "The government should encourage sustainable tourism instead of mass tourism."],
+["Ở các homestay, du khách có thể trải nghiệm du lịch bền vững và văn hóa bản địa.", "At homestays, visitors can experience sustainable tourism and local culture."],
+["Đi du lịch một mình giúp tôi tự lập hơn và mở mang tầm mắt.", "Travelling alone makes me more independent and broadens my horizons."],
+["Tôi thích những chuyến đi đến nơi ít người biết đến hơn là các khu nghỉ dưỡng sang trọng.", "I prefer trips off the beaten track to luxury resorts."]],
+p1:["Do you like travelling?","Where did you go on your last holiday?","Do you prefer travelling alone or with other people?","What kind of places would you like to visit in the future?"],
+p2:{t:"Describe a trip you took that you really enjoyed.",b:["where you went","who you went with","what you did there"],e:"and explain why you enjoyed it so much."},
+p3:["What are the negative effects of mass tourism on local communities?","Should tourists pay more to visit famous attractions?","How has the way people travel changed in recent years?"]},
+{n:"13",en:"Media & Advertising",vi:"Truyền thông & Quảng cáo",
+v:[["mainstream media","truyền thông chính thống","Many young people no longer trust the mainstream media."],["fake news","tin giả","Fake news spreads much faster than the truth on social media."],["consumerism","chủ nghĩa tiêu dùng","Advertising is one of the main drivers of consumerism."],["target audience","nhóm khán giả, khách hàng mục tiêu","The target audience of this advert is teenagers."],["misleading advertisements","quảng cáo sai sự thật, gây hiểu lầm","Misleading advertisements should be banned."],["go viral","lan truyền chóng mặt trên mạng","The video went viral overnight.","(go|goes|went|gone|going) viral"],["social media influencer","người có ảnh hưởng trên mạng xã hội","Brands pay social media influencers to promote their products."],["be bombarded with ads","bị quảng cáo dội bom","We are bombarded with ads every time we open our phones."]],
+tr:[["Ngày nay, tin giả lan truyền rất nhanh trên mạng xã hội.", "Nowadays, fake news spreads very quickly on social media."],
+["Nhiều quảng cáo gây hiểu lầm khiến người tiêu dùng mua những sản phẩm họ không cần.", "Many misleading advertisements make consumers buy products they do not need."],
+["Đối tượng khán giả mục tiêu của chương trình này là thanh thiếu niên.", "The target audience of this programme is teenagers."],
+["Tôi vẫn tin tưởng truyền thông chính thống hơn là các trang tin trên mạng.", "I still trust the mainstream media more than online news sites."],
+["Truyền thông chính thống thường đưa tin chậm hơn mạng xã hội.", "The mainstream media often reports news more slowly than social media."],
+["Nhiều người cho rằng truyền thông chính thống không còn khách quan.", "Many people believe that the mainstream media is no longer objective."],
+["Tôi đọc tin từ truyền thông chính thống để chắc chắn thông tin là chính xác.", "I read news from the mainstream media to make sure the information is accurate."],
+["Chúng ta nên kiểm tra nguồn tin trước khi chia sẻ để tránh lan truyền tin giả.", "We should check the source before sharing to avoid spreading fake news."],
+["Người lớn tuổi dễ tin vào tin giả hơn người trẻ.", "Older people are more likely to believe fake news than young people."],
+["Các mạng xã hội cần có trách nhiệm ngăn chặn tin giả.", "Social networks need to take responsibility for stopping fake news."],
+["Chủ nghĩa tiêu dùng khiến con người lúc nào cũng muốn mua thêm đồ mới.", "Consumerism makes people always want to buy new things."],
+["Quảng cáo đóng vai trò lớn trong việc thúc đẩy chủ nghĩa tiêu dùng.", "Advertising plays a big role in promoting consumerism."],
+["Tôi nghĩ chủ nghĩa tiêu dùng đang gây hại cho môi trường.", "I think consumerism is harming the environment."],
+["Các công ty luôn nghiên cứu kỹ nhóm khách hàng mục tiêu trước khi quảng cáo.", "Companies always study their target audience carefully before advertising."],
+["Nhóm khách hàng mục tiêu của các hãng mỹ phẩm chủ yếu là phụ nữ trẻ.", "The target audience of cosmetics brands is mainly young women."],
+["Quảng cáo này thất bại vì chọn sai nhóm khán giả mục tiêu.", "This advert failed because it chose the wrong target audience."],
+["Trẻ em rất dễ bị ảnh hưởng bởi những quảng cáo gây hiểu lầm.", "Children are easily influenced by misleading advertisements."],
+["Chính phủ nên phạt nặng các công ty làm quảng cáo sai sự thật.", "The government should heavily fine companies that make misleading advertisements."],
+["Nhiều quảng cáo thực phẩm chức năng thực chất là quảng cáo gây hiểu lầm.", "Many adverts for dietary supplements are actually misleading advertisements."],
+["Video của cô ấy đã lan truyền chóng mặt chỉ sau một đêm.", "Her video went viral overnight."],
+["Ngày nay, ai cũng có thể nổi tiếng nếu bài đăng của họ lan truyền mạnh trên mạng.", "These days, anyone can become famous if their post goes viral."],
+["Những tin tức gây sốc thường lan truyền rất nhanh trên mạng.", "Shocking news stories often go viral very quickly."],
+["Nhiều người có ảnh hưởng trên mạng xã hội kiếm được rất nhiều tiền từ quảng cáo.", "Many social media influencers earn a lot of money from advertising."],
+["Giới trẻ thường mua sản phẩm vì được người có ảnh hưởng trên mạng giới thiệu.", "Young people often buy products because a social media influencer recommends them."],
+["Tôi không hoàn toàn tin vào những gì người có ảnh hưởng trên mạng nói.", "I don't completely trust what social media influencers say."],
+["Mỗi khi lướt mạng xã hội, chúng ta bị quảng cáo dội bom.", "Every time we scroll through social media, we are bombarded with ads."],
+["Tôi cài phần mềm chặn quảng cáo vì không muốn bị quảng cáo dội bom.", "I installed an ad blocker because I didn't want to be bombarded with ads."],
+["Trẻ em ngày nay bị quảng cáo dội bom trên YouTube.", "Children today are bombarded with ads on YouTube."],
+["Tin giả có thể lan truyền chóng mặt chỉ trong vài giờ.", "Fake news can go viral in just a few hours."],
+["Theo tôi, quảng cáo gây hiểu lầm làm giảm lòng tin của người tiêu dùng.", "In my opinion, misleading advertisements reduce consumers' trust."]],
+p1:["How do you usually get the news?","Do you often read newspapers?","Do you like watching advertisements?","Have you ever bought something because of an advertisement?"],
+p2:{t:"Describe an advertisement that you remember well.",b:["where you saw it","what product or service it was for","what it showed"],e:"and explain why you remember it."},
+p3:["How can people tell the difference between fake news and real news?","Should advertising aimed at children be restricted?","Do you think advertising encourages consumerism?"]},
+{n:"14",en:"Transport",vi:"Giao thông",
+v:[["public transport system","hệ thống giao thông công cộng","Hanoi is upgrading its public transport system."],["rush hour","giờ cao điểm","The roads are packed during rush hour."],["commute","việc đi lại (đi làm, đi học) hằng ngày","My daily commute takes about forty minutes.","commut\\w*"],["carbon footprint","lượng khí thải carbon","Cycling is a simple way to reduce your carbon footprint."],["traffic congestion","ùn tắc giao thông","Traffic congestion is a serious problem in big cities."],["be stuck in traffic","bị kẹt xe","I was stuck in traffic for an hour yesterday."],["eco-friendly","thân thiện với môi trường","Electric buses are more eco-friendly than motorbikes."],["metro line","tuyến tàu điện (metro)","The new metro line has made my commute much easier."]],
+tr:[["Vào giờ cao điểm, tôi thường bị kẹt xe gần một tiếng.", "During rush hour, I am often stuck in traffic for nearly an hour."],
+["Chính phủ nên đầu tư nhiều hơn vào hệ thống giao thông công cộng.", "The government should invest more in the public transport system."],
+["Đi xe đạp đi làm là một cách đơn giản để giảm lượng khí thải carbon.", "Cycling to work is a simple way to reduce your carbon footprint."],
+["Quãng đường đi làm hằng ngày của tôi mất khoảng 30 phút bằng xe máy.", "My daily commute takes about 30 minutes by motorbike."],
+["Hệ thống giao thông công cộng ở thành phố tôi vẫn chưa thuận tiện lắm.", "The public transport system in my city is still not very convenient."],
+["Một hệ thống giao thông công cộng tốt sẽ giúp giảm số lượng xe máy.", "A good public transport system would help reduce the number of motorbikes."],
+["Ở Singapore, hệ thống giao thông công cộng rất hiện đại và đúng giờ.", "In Singapore, the public transport system is very modern and punctual."],
+["Tôi luôn cố gắng tránh ra đường vào giờ cao điểm.", "I always try to avoid going out during rush hour."],
+["Xe buýt lúc nào cũng chật kín người vào giờ cao điểm buổi sáng.", "Buses are always packed during the morning rush hour."],
+["Giờ cao điểm ở Hà Nội thường kéo dài từ 5 đến 7 giờ tối.", "Rush hour in Hanoi usually lasts from 5 to 7 p.m."],
+["Tôi thường nghe podcast trong lúc đi làm hằng ngày.", "I usually listen to podcasts during my daily commute."],
+["Nhiều người chọn sống gần công ty để rút ngắn quãng đường đi làm.", "Many people choose to live near their office to shorten their commute."],
+["Đi làm bằng tàu điện thoải mái hơn nhiều so với đi xe máy.", "Commuting by train is much more comfortable than by motorbike."],
+["Đi máy bay thường xuyên làm tăng lượng khí thải carbon của mỗi người.", "Flying frequently increases a person's carbon footprint."],
+["Chúng ta có thể giảm lượng khí thải carbon bằng cách đi xe buýt thay vì lái ô tô.", "We can reduce our carbon footprint by taking the bus instead of driving."],
+["Xe điện giúp các thành phố giảm lượng khí thải carbon.", "Electric vehicles help cities reduce their carbon footprint."],
+["Ùn tắc giao thông khiến người dân mất rất nhiều thời gian mỗi ngày.", "Traffic congestion makes people waste a lot of time every day."],
+["Một trong những nguyên nhân chính gây ùn tắc giao thông là có quá nhiều xe cá nhân.", "One of the main causes of traffic congestion is the large number of private vehicles."],
+["Chính quyền đang xây thêm cầu vượt để giảm ùn tắc giao thông.", "The authorities are building more flyovers to reduce traffic congestion."],
+["Hôm qua tôi bị kẹt xe nên đến lớp muộn.", "Yesterday I was stuck in traffic, so I was late for class."],
+["Không ai thích bị kẹt xe dưới trời nắng nóng.", "Nobody likes being stuck in traffic in the hot sun."],
+["Khi trời mưa to, tôi thường bị kẹt xe hàng giờ liền.", "When it rains heavily, I often get stuck in traffic for hours."],
+["Xe đạp là phương tiện thân thiện với môi trường nhất.", "Bicycles are the most eco-friendly means of transport."],
+["Thành phố nên đầu tư vào xe buýt điện thân thiện với môi trường.", "The city should invest in eco-friendly electric buses."],
+["Ngày càng nhiều người chọn cách đi lại thân thiện với môi trường.", "More and more people are choosing eco-friendly ways to get around."],
+["Tuyến metro đầu tiên ở Sài Gòn đã chính thức đi vào hoạt động.", "The first metro line in Saigon has officially started operating."],
+["Tôi hy vọng sẽ có thêm nhiều tuyến metro để giảm ùn tắc.", "I hope there will be more metro lines to reduce congestion."],
+["Nhà tôi ở gần tuyến metro nên việc đi lại rất dễ dàng.", "My house is near a metro line, so getting around is very easy."],
+["Theo tôi, ô tô cá nhân nên bị hạn chế ở trung tâm thành phố vào giờ cao điểm.", "In my opinion, private cars should be restricted in the city centre during rush hour."],
+["Nếu hệ thống giao thông công cộng tốt hơn, tôi sẽ để xe máy ở nhà.", "If the public transport system were better, I would leave my motorbike at home."]],
+p1:["How do you usually get to work or school?","Is public transport convenient where you live?","Do you prefer travelling by bus or by motorbike?","Has transport in your city changed in recent years?"],
+p2:{t:"Describe a journey that you remember well.",b:["where you went","how you travelled","what happened on the way"],e:"and explain why you remember this journey."},
+p3:["How can cities reduce traffic congestion?","Should private cars be banned from city centres?","What will transport look like in the future?"]},
+{n:"15",en:"Food & Diet",vi:"Ẩm thực",
+v:[["processed food","thực phẩm chế biến sẵn","Processed food is convenient but often unhealthy."],["home-cooked meals","bữa ăn nấu tại nhà","Nothing beats my mum's home-cooked meals."],["fast food culture","văn hóa đồ ăn nhanh","Fast food culture is spreading among Vietnamese teenagers."],["nutritional value","giá trị dinh dưỡng","Instant noodles have very little nutritional value."],["balanced diet","chế độ ăn cân bằng","A balanced diet includes plenty of vegetables."],["have a sweet tooth","hảo ngọt, thích đồ ngọt","I have a sweet tooth, so I can't resist bubble tea.","sweet tooth"],["eat on the go","ăn vội, vừa đi vừa ăn","Office workers often eat on the go.","on the go"],["street food","đồ ăn đường phố","Vietnamese street food is cheap and delicious."]],
+tr:[["Tôi thích những bữa ăn nấu tại nhà hơn đồ ăn nhanh.", "I prefer home-cooked meals to fast food."],
+["Thực phẩm chế biến sẵn tiện lợi nhưng thường có ít giá trị dinh dưỡng.", "Processed food is convenient but often has little nutritional value."],
+["Văn hóa đồ ăn nhanh đang ngày càng phổ biến trong giới trẻ.", "Fast food culture is becoming increasingly popular among young people."],
+["Vì bận rộn, nhiều người đi làm thường ăn vội trên đường.", "Because they are busy, many office workers often eat on the go."],
+["Ăn quá nhiều thực phẩm chế biến sẵn có thể gây ra các vấn đề sức khỏe.", "Eating too much processed food can cause health problems."],
+["Tôi đang cố gắng cắt giảm thực phẩm chế biến sẵn như xúc xích và mì gói.", "I am trying to cut down on processed food such as sausages and instant noodles."],
+["Thực phẩm chế biến sẵn thường chứa nhiều muối và đường.", "Processed food often contains a lot of salt and sugar."],
+["Không gì ngon bằng những bữa cơm mẹ nấu ở nhà.", "Nothing tastes better than my mum's home-cooked meals."],
+["Những bữa ăn nấu tại nhà vừa rẻ vừa tốt cho sức khỏe.", "Home-cooked meals are both cheap and healthy."],
+["Gia đình tôi luôn cố gắng cùng nhau ăn cơm nhà vào cuối tuần.", "My family always tries to have home-cooked meals together at weekends."],
+["Văn hóa đồ ăn nhanh du nhập vào Việt Nam từ phương Tây.", "Fast food culture came to Vietnam from the West."],
+["Văn hóa đồ ăn nhanh là một nguyên nhân khiến tỉ lệ béo phì ở trẻ em tăng.", "Fast food culture is one reason why child obesity rates are rising."],
+["Tôi lo rằng văn hóa đồ ăn nhanh sẽ thay thế các món ăn truyền thống.", "I am worried that fast food culture will replace traditional dishes."],
+["Rau xanh và trái cây có giá trị dinh dưỡng cao.", "Green vegetables and fruit have high nutritional value."],
+["Nhiều người chỉ quan tâm đến hương vị mà quên mất giá trị dinh dưỡng.", "Many people only care about taste and forget about nutritional value."],
+["Bữa trưa ở trường nên có giá trị dinh dưỡng cao hơn.", "School lunches should have more nutritional value."],
+["Một chế độ ăn cân bằng nên có đủ chất đạm, rau và tinh bột.", "A balanced diet should include enough protein, vegetables and carbohydrates."],
+["Để giữ sức khỏe, bạn cần một chế độ ăn cân bằng và tập thể dục đều đặn.", "To stay healthy, you need a balanced diet and regular exercise."],
+["Bác sĩ khuyên tôi nên duy trì một chế độ ăn cân bằng.", "My doctor advised me to maintain a balanced diet."],
+["Tôi rất hảo ngọt nên không thể cưỡng lại bánh ngọt.", "I have a sweet tooth, so I can't resist cakes."],
+["Em gái tôi hảo ngọt và uống trà sữa gần như mỗi ngày.", "My younger sister has a sweet tooth and drinks bubble tea almost every day."],
+["Người hảo ngọt nên cẩn thận với lượng đường nạp vào mỗi ngày.", "People with a sweet tooth should be careful about their daily sugar intake."],
+["Vì quá bận, tôi thường ăn vội ổ bánh mì trên đường đi làm.", "Because I'm so busy, I often eat a banh mi on the go on my way to work."],
+["Ăn vội không tốt cho hệ tiêu hóa.", "Eating on the go is not good for your digestion."],
+["Nhiều sinh viên thường ăn vội giữa các tiết học.", "Many students often eat on the go between classes."],
+["Đồ ăn đường phố Việt Nam nổi tiếng khắp thế giới.", "Vietnamese street food is famous all over the world."],
+["Du khách nước ngoài rất thích thử đồ ăn đường phố như phở và bánh mì.", "Foreign tourists love trying street food such as pho and banh mi."],
+["Đồ ăn đường phố rẻ và ngon, nhưng đôi khi không đảm bảo vệ sinh.", "Street food is cheap and tasty, but sometimes it is not hygienic."],
+["Tôi nghĩ trường học nên dạy trẻ em về chế độ ăn cân bằng.", "I think schools should teach children about a balanced diet."],
+["Thay vì ăn thực phẩm chế biến sẵn, tôi cố gắng tự nấu ăn ở nhà.", "Instead of eating processed food, I try to cook at home."]],
+p1:["What is your favourite food?","Do you often cook at home?","Do you eat a lot of fast food?","Is there any food you didn't like as a child?"],
+p2:{t:"Describe a traditional dish from your country.",b:["what it is","how it is made","when people usually eat it"],e:"and explain why it is special to you."},
+p3:["Why do many people choose fast food over home-cooked meals?","Should schools teach children about nutrition?","How have eating habits changed in your country?"]},
+{n:"16",en:"Hobbies & Leisure",vi:"Sở thích & Giải trí",
+v:[["unwind","thư giãn, xả hơi","I like to unwind by listening to music after work."],["pastime","thú tiêu khiển","Reading is my favourite pastime."],["recharge one's batteries","nạp lại năng lượng","A weekend in the countryside helps me recharge my batteries."],["take up a hobby","bắt đầu theo một sở thích","I took up painting during the pandemic.","t(ake|akes|ook|aking|aken) up"],["be into something","rất thích, mê cái gì","I'm really into photography these days.","(i'm|you're|we're|they're|he's|she's|am|is|are|was|were|be|been) (really |so )?into"],["kill time","giết thời gian","I play mobile games to kill time on the bus."],["relieve stress","giải tỏa căng thẳng","Gardening helps me relieve stress."],["screen time","thời gian dùng thiết bị điện tử","I'm trying to cut down on my screen time."]],
+tr:[["Sau một ngày làm việc mệt mỏi, tôi thường nghe nhạc để thư giãn.", "After a tiring day at work, I usually listen to music to unwind."],
+["Đọc sách là thú tiêu khiển yêu thích của tôi từ khi còn nhỏ.", "Reading has been my favourite pastime since I was a child."],
+["Năm ngoái tôi bắt đầu chơi cầu lông để cải thiện sức khỏe.", "Last year I took up badminton to improve my health."],
+["Một chuyến đi cuối tuần giúp tôi nạp lại năng lượng cho tuần mới.", "A weekend trip helps me recharge my batteries for the new week."],
+["Tôi thường đi dạo công viên để thư giãn sau giờ học.", "I often take a walk in the park to unwind after school."],
+["Xem phim là cách tôi thư giãn vào cuối tuần.", "Watching films is how I unwind at the weekend."],
+["Nhiều người tập yoga để thư giãn và giải tỏa đầu óc.", "Many people do yoga to unwind and clear their minds."],
+["Câu cá là thú tiêu khiển phổ biến của người lớn tuổi ở Việt Nam.", "Fishing is a popular pastime among older people in Vietnam."],
+["Chơi game điện tử đã trở thành thú tiêu khiển chính của giới trẻ.", "Playing video games has become the main pastime of young people."],
+["Thú tiêu khiển yêu thích của ông tôi là chăm sóc cây cảnh.", "My grandfather's favourite pastime is taking care of bonsai trees."],
+["Tôi cần một kỳ nghỉ để nạp lại năng lượng sau một năm làm việc vất vả.", "I need a holiday to recharge my batteries after a hard year at work."],
+["Ngủ đủ giấc là cách nhanh nhất để tôi nạp lại năng lượng.", "Getting enough sleep is the fastest way for me to recharge my batteries."],
+["Dành thời gian với thiên nhiên giúp chúng ta nạp lại năng lượng.", "Spending time in nature helps us recharge our batteries."],
+["Tôi định bắt đầu học đàn guitar vào năm sau.", "I am planning to take up the guitar next year."],
+["Bắt đầu một sở thích mới giúp bạn gặp gỡ nhiều người mới.", "Taking up a new hobby helps you meet new people."],
+["Mẹ tôi bắt đầu học vẽ tranh sau khi nghỉ hưu.", "My mother took up painting after she retired."],
+["Dạo này tôi rất mê chụp ảnh phong cảnh.", "I'm really into landscape photography these days."],
+["Hồi nhỏ tôi rất mê truyện tranh.", "When I was a child, I was really into comics."],
+["Bạn tôi rất mê nấu ăn và thường thử công thức mới.", "My friend is really into cooking and often tries new recipes."],
+["Tôi thường đọc sách để giết thời gian khi chờ xe buýt.", "I often read books to kill time while waiting for the bus."],
+["Nhiều người lướt điện thoại chỉ để giết thời gian.", "Many people scroll through their phones just to kill time."],
+["Thay vì giết thời gian, tôi muốn học một kỹ năng mới.", "Instead of killing time, I want to learn a new skill."],
+["Nghe nhạc là cách đơn giản nhất để giải tỏa căng thẳng.", "Listening to music is the simplest way to relieve stress."],
+["Tôi chơi thể thao để giải tỏa căng thẳng sau giờ làm.", "I play sports to relieve stress after work."],
+["Làm vườn giúp mẹ tôi giải tỏa căng thẳng.", "Gardening helps my mother relieve stress."],
+["Trẻ em ngày nay dành quá nhiều thời gian cho thiết bị điện tử.", "Children today have too much screen time."],
+["Tôi đang cố gắng giảm thời gian dùng điện thoại bằng cách đọc sách nhiều hơn.", "I'm trying to reduce my screen time by reading more books."],
+["Cha mẹ nên giới hạn thời gian dùng thiết bị điện tử của con cái.", "Parents should limit their children's screen time."],
+["Một chuyến leo núi cuối tuần giúp tôi thư giãn và nạp lại năng lượng.", "A hiking trip at the weekend helps me unwind and recharge my batteries."],
+["Tôi nghĩ ai cũng nên có ít nhất một thú tiêu khiển để giảm căng thẳng.", "I think everyone should have at least one pastime to reduce stress."]],
+p1:["What do you like to do in your free time?","Did you have any hobbies as a child?","Do you prefer indoor or outdoor activities?","Is there a hobby you would like to take up in the future?"],
+p2:{t:"Describe a hobby that you enjoy.",b:["what the hobby is","when and how you started it","how often you do it"],e:"and explain why you enjoy it."},
+p3:["Why do some people have no time for hobbies?","Are expensive hobbies better than free ones?","How do people's leisure activities change as they get older?"]},
+{n:"17",en:"Shopping & Consumerism",vi:"Mua sắm",
+v:[["impulse buying","mua sắm bốc đồng","Flash sales encourage a lot of impulse buying."],["brand loyalty","lòng trung thành với thương hiệu","Some phone brands enjoy very strong brand loyalty."],["online shopping","mua sắm trực tuyến","Online shopping saves me a lot of time."],["materialistic","thực dụng, coi trọng vật chất","Some people say young people are too materialistic."],["shop around","so sánh giá ở nhiều nơi trước khi mua","I always shop around before buying electronics."],["a real bargain","món hời","This jacket was a real bargain at half price."],["splash out on","vung tiền, chi mạnh tay cho","I splashed out on a new phone last month."],["window shopping","đi ngắm đồ (không mua)","We went window shopping at the mall."]],
+tr:[["Những đợt giảm giá chớp nhoáng khiến nhiều người mua sắm bốc đồng.", "Flash sales lead to a lot of impulse buying."],
+["Mua sắm trực tuyến tiện lợi nhưng đôi khi hàng không giống như hình.", "Online shopping is convenient, but sometimes the products don't look like the pictures."],
+["Tôi luôn so sánh giá ở nhiều nơi trước khi mua đồ điện tử.", "I always shop around before buying electronic devices."],
+["Một số người cho rằng giới trẻ ngày nay quá coi trọng vật chất.", "Some people believe that young people today are too materialistic."],
+["Mua sắm bốc đồng có thể khiến bạn tiêu quá nhiều tiền.", "Impulse buying can make you spend too much money."],
+["Để tránh mua sắm bốc đồng, tôi luôn viết danh sách trước khi đi mua đồ.", "To avoid impulse buying, I always write a list before going shopping."],
+["Siêu thị đặt kẹo gần quầy thu ngân để kích thích mua sắm bốc đồng.", "Supermarkets put sweets near the checkout to encourage impulse buying."],
+["Nhiều khách hàng rất trung thành với thương hiệu điện thoại họ đang dùng.", "Many customers have strong brand loyalty to the phone brand they use."],
+["Các chương trình tích điểm được tạo ra để xây dựng lòng trung thành với thương hiệu.", "Loyalty programmes are designed to build brand loyalty."],
+["Giới trẻ ngày nay ít trung thành với thương hiệu hơn thế hệ trước.", "Young people today show less brand loyalty than previous generations."],
+["Mua sắm trực tuyến giúp tôi tiết kiệm rất nhiều thời gian.", "Online shopping saves me a lot of time."],
+["Mua sắm trực tuyến ngày càng phổ biến, đặc biệt là sau đại dịch.", "Online shopping has become increasingly popular, especially after the pandemic."],
+["Nhược điểm của mua sắm trực tuyến là bạn không thể thử đồ trước khi mua.", "The downside of online shopping is that you cannot try things on before buying."],
+["Tôi không muốn trở thành người quá coi trọng vật chất.", "I don't want to become too materialistic."],
+["Mạng xã hội khiến nhiều người trở nên thực dụng hơn.", "Social media makes many people more materialistic."],
+["Một xã hội quá coi trọng vật chất có thể khiến con người cảm thấy không hạnh phúc.", "A materialistic society can make people feel unhappy."],
+["Bạn nên so sánh giá ở nhiều cửa hàng để mua được giá tốt nhất.", "You should shop around to get the best price."],
+["Mẹ tôi luôn so sánh giá ở nhiều nơi trước khi mua đồ gia dụng.", "My mother always shops around before buying household appliances."],
+["Mua sắm trực tuyến giúp việc so sánh giá dễ dàng hơn nhiều.", "Online shopping makes it much easier to shop around."],
+["Chiếc áo khoác này là một món hời vì được giảm giá 50%.", "This jacket was a real bargain because it was 50% off."],
+["Tôi mua được chiếc xe đạp cũ này với giá rất hời.", "I bought this second-hand bike, and it was a real bargain."],
+["Ở chợ đêm, bạn có thể tìm được món hời nếu biết mặc cả.", "At night markets, you can find a real bargain if you know how to haggle."],
+["Tôi đã chi mạnh tay cho một chiếc laptop mới để phục vụ công việc.", "I splashed out on a new laptop for work."],
+["Thỉnh thoảng tôi chi mạnh tay cho một bữa tối sang trọng để tự thưởng.", "Sometimes I splash out on a fancy dinner to treat myself."],
+["Nhiều người chi mạnh tay cho quần áo hàng hiệu dù không thực sự cần.", "Many people splash out on designer clothes even though they don't really need them."],
+["Cuối tuần, tôi và bạn bè thường đi ngắm đồ ở trung tâm thương mại.", "At weekends, my friends and I often go window shopping at the mall."],
+["Đi ngắm đồ là một kiểu giải trí miễn phí mà tôi rất thích.", "Window shopping is a free form of entertainment that I really enjoy."],
+["Đi ngắm đồ đôi khi dẫn đến mua sắm bốc đồng.", "Window shopping sometimes leads to impulse buying."],
+["Theo tôi, mua sắm trực tuyến đang đe dọa các cửa hàng truyền thống.", "In my opinion, online shopping is threatening traditional shops."],
+["Trẻ em lớn lên với quá nhiều quảng cáo có thể trở nên thực dụng.", "Children who grow up with too many adverts may become materialistic."]],
+p1:["Do you enjoy shopping?","Do you prefer shopping online or in stores?","How often do you buy clothes?","Have you ever bought something you later regretted?"],
+p2:{t:"Describe something you bought recently that you are happy with.",b:["what it was","where and when you bought it","how much it cost"],e:"and explain why you are happy with it."},
+p3:["Why do people sometimes buy things they don't need?","Is online shopping a threat to traditional shops?","Are young people today more materialistic than in the past?"]},
+{n:"18",en:"Arts & Culture",vi:"Nghệ thuật & Văn hóa",
+v:[["cultural heritage","di sản văn hóa","Hue is famous for its rich cultural heritage."],["preserve traditions","gìn giữ truyền thống","Festivals help us preserve traditions.","preserv\\w*(\\s+\\w+){0,2}\\s+traditions?"],["government funding for the arts","ngân sách nhà nước cho nghệ thuật","Government funding for the arts keeps small theatres alive.","funding for the arts"],["art exhibition","triển lãm nghệ thuật","I went to an art exhibition at the Fine Arts Museum."],["traditional craft","nghề thủ công truyền thống","Bat Trang village is known for its traditional craft of pottery."],["cultural identity","bản sắc văn hóa","Language is a key part of cultural identity."],["die out","mai một, biến mất dần","Many folk songs are dying out.","d(ie|ies|ied|ying) out"],["appreciate art","thưởng thức, trân trọng nghệ thuật","You don't need to be an expert to appreciate art.","appreciat\\w*(\\s+\\w+)?\\s+art"]],
+tr:[["Việt Nam có một di sản văn hóa phong phú cần được bảo tồn.", "Vietnam has a rich cultural heritage that needs to be preserved."],
+["Giới trẻ nên chung tay gìn giữ truyền thống, chẳng hạn như các phong tục ngày Tết.", "Young people should work together to preserve traditions, such as Tet customs."],
+["Nhiều người cho rằng chính phủ nên tăng ngân sách cho nghệ thuật.", "Many people think the government should increase funding for the arts."],
+["Nhiều nghề thủ công truyền thống đang có nguy cơ mai một.", "Many traditional crafts are in danger of dying out."],
+["Cố đô Huế là một phần quan trọng trong di sản văn hóa của Việt Nam.", "The former imperial city of Hue is an important part of Vietnam's cultural heritage."],
+["Chúng ta cần dạy trẻ em về di sản văn hóa từ khi còn nhỏ.", "We need to teach children about cultural heritage from a young age."],
+["Du lịch có thể giúp quảng bá di sản văn hóa nhưng cũng có thể làm hư hại nó.", "Tourism can help promote cultural heritage, but it can also damage it."],
+["Gia đình tôi vẫn giữ truyền thống gói bánh chưng mỗi dịp Tết.", "My family still preserves the tradition of making banh chung every Tet."],
+["Lễ hội giúp người dân địa phương gìn giữ truyền thống của họ.", "Festivals help local people preserve their traditions."],
+["Trong thời đại toàn cầu hóa, việc gìn giữ truyền thống ngày càng khó khăn.", "In the age of globalisation, it is getting harder to preserve traditions."],
+["Nếu không có ngân sách nhà nước cho nghệ thuật, nhiều nhà hát sẽ phải đóng cửa.", "Without government funding for the arts, many theatres would have to close."],
+["Một số người cho rằng ngân sách cho nghệ thuật nên được dành cho y tế.", "Some people argue that funding for the arts should be spent on healthcare instead."],
+["Ngân sách nhà nước cho nghệ thuật giúp các nghệ sĩ trẻ phát triển.", "Government funding for the arts helps young artists develop."],
+["Cuối tuần trước, tôi đã đi xem một triển lãm nghệ thuật đương đại.", "Last weekend, I went to a contemporary art exhibition."],
+["Triển lãm nghệ thuật này đã thu hút hàng nghìn khách tham quan.", "This art exhibition attracted thousands of visitors."],
+["Tôi không thường đi xem triển lãm nghệ thuật vì không hiểu nhiều về hội họa.", "I don't often go to art exhibitions because I don't know much about painting."],
+["Làng gốm Bát Tràng nổi tiếng với nghề thủ công truyền thống.", "Bat Trang pottery village is famous for its traditional craft."],
+["Nhiều người trẻ không muốn theo nghề thủ công truyền thống vì thu nhập thấp.", "Many young people don't want to follow a traditional craft because the income is low."],
+["Du khách có thể học làm nón lá, một nghề thủ công truyền thống của Việt Nam.", "Tourists can learn to make conical hats, a traditional craft of Vietnam."],
+["Tiếng mẹ đẻ là một phần quan trọng của bản sắc văn hóa.", "Our mother tongue is an important part of our cultural identity."],
+["Toàn cầu hóa có thể khiến một quốc gia đánh mất bản sắc văn hóa.", "Globalisation can cause a country to lose its cultural identity."],
+["Áo dài thể hiện bản sắc văn hóa của người Việt.", "The ao dai reflects the cultural identity of Vietnamese people."],
+["Nhiều làn điệu dân ca đang dần mai một.", "Many folk songs are gradually dying out."],
+["Nếu không được bảo tồn, nghề thủ công này sẽ biến mất.", "If it is not preserved, this craft will die out."],
+["Một số phong tục cổ đã mai một ở các thành phố lớn.", "Some old customs have died out in big cities."],
+["Bạn không cần phải là chuyên gia mới có thể thưởng thức nghệ thuật.", "You don't need to be an expert to appreciate art."],
+["Đi bảo tàng giúp trẻ em học cách thưởng thức nghệ thuật.", "Visiting museums helps children learn to appreciate art."],
+["Càng lớn tuổi, tôi càng biết trân trọng nghệ thuật truyền thống.", "The older I get, the more I appreciate traditional art."],
+["Chính phủ nên hỗ trợ các làng nghề để nghề thủ công truyền thống không bị mai một.", "The government should support craft villages so that traditional crafts do not die out."],
+["Bảo tồn di sản văn hóa giúp thế hệ sau hiểu về lịch sử dân tộc.", "Preserving cultural heritage helps future generations understand their nation's history."]],
+p1:["Do you like visiting museums or art galleries?","Did you learn art at school?","Is there a traditional festival you enjoy?","Do you prefer modern art or traditional art?"],
+p2:{t:"Describe a traditional festival or custom in your country.",b:["what it is","when it takes place","what people do"],e:"and explain why it is important to people."},
+p3:["Why is it important to preserve cultural heritage?","Should the government spend money on the arts or on healthcare instead?","How does globalisation affect local cultures?"]},
+{n:"19",en:"Sports",vi:"Thể thao",
+v:[["physical fitness","thể lực, sức khỏe thể chất","Swimming improves your physical fitness."],["team spirit","tinh thần đồng đội","Football teaches children team spirit."],["professional athletes","vận động viên chuyên nghiệp","Professional athletes train for hours every day."],["competitive sports","thể thao thi đấu, mang tính cạnh tranh","Competitive sports can be stressful for children."],["keep fit","giữ dáng, giữ sức khỏe","I jog every morning to keep fit.","(keep|keeps|kept|keeping) fit"],["work out","tập luyện (thể hình)","I work out at the gym three times a week."],["sedentary lifestyle","lối sống ít vận động","Office workers often have a sedentary lifestyle."],["sportsmanship","tinh thần thể thao, chơi đẹp","Good sportsmanship means respecting your opponents."]],
+tr:[["Chơi thể thao đồng đội giúp trẻ em phát triển tinh thần đồng đội.", "Playing team sports helps children develop team spirit."],
+["Tôi chạy bộ mỗi sáng để giữ sức khỏe.", "I go jogging every morning to keep fit."],
+["Các vận động viên chuyên nghiệp phải tập luyện rất chăm chỉ mỗi ngày.", "Professional athletes have to train very hard every day."],
+["Lối sống ít vận động là nguyên nhân chính gây béo phì ở dân văn phòng.", "A sedentary lifestyle is a major cause of obesity among office workers."],
+["Bơi lội là cách tuyệt vời để cải thiện thể lực.", "Swimming is a great way to improve your physical fitness."],
+["Trường học nên chú trọng hơn đến thể lực của học sinh.", "Schools should pay more attention to students' physical fitness."],
+["Bộ đội phải vượt qua bài kiểm tra thể lực rất khắt khe.", "Soldiers have to pass a very tough physical fitness test."],
+["Bóng đá dạy cho trẻ em tinh thần đồng đội.", "Football teaches children team spirit."],
+["Đội chúng tôi thắng nhờ tinh thần đồng đội chứ không phải nhờ một cầu thủ giỏi.", "Our team won thanks to team spirit, not one talented player."],
+["Tinh thần đồng đội cũng rất quan trọng trong công việc.", "Team spirit is also very important at work."],
+["Các vận động viên chuyên nghiệp phải hy sinh rất nhiều thứ.", "Professional athletes have to sacrifice a lot."],
+["Nhiều người cho rằng vận động viên chuyên nghiệp được trả lương quá cao.", "Many people think that professional athletes are paid too much."],
+["Các vận động viên chuyên nghiệp là hình mẫu cho giới trẻ.", "Professional athletes are role models for young people."],
+["Thể thao thi đấu giúp trẻ học cách chấp nhận thất bại.", "Competitive sports help children learn how to accept defeat."],
+["Tôi không thích thể thao thi đấu vì chúng tạo ra quá nhiều áp lực.", "I don't like competitive sports because they create too much pressure."],
+["Một số cha mẹ ép con tham gia thể thao thi đấu từ quá sớm.", "Some parents push their children into competitive sports too early."],
+["Tôi đạp xe đi làm mỗi ngày để giữ sức khỏe.", "I cycle to work every day to keep fit."],
+["Bạn không cần đến phòng tập mới có thể giữ dáng.", "You don't need to go to the gym to keep fit."],
+["Ông bà tôi tập dưỡng sinh mỗi sáng để giữ gìn sức khỏe.", "My grandparents do gentle exercises every morning to keep fit."],
+["Tôi tập gym ba lần một tuần.", "I work out at the gym three times a week."],
+["Sau khi tập luyện, tôi luôn cảm thấy tràn đầy năng lượng.", "After working out, I always feel full of energy."],
+["Nhiều người trẻ tập thể hình để có vóc dáng đẹp.", "Many young people work out to get in shape."],
+["Lối sống ít vận động có thể dẫn đến nhiều bệnh nguy hiểm.", "A sedentary lifestyle can lead to many serious diseases."],
+["Nhân viên văn phòng thường có lối sống ít vận động.", "Office workers often have a sedentary lifestyle."],
+["Để tránh lối sống ít vận động, tôi cố gắng đi bộ 30 phút mỗi ngày.", "To avoid a sedentary lifestyle, I try to walk for 30 minutes every day."],
+["Tinh thần thể thao nghĩa là tôn trọng đối thủ dù thắng hay thua.", "Sportsmanship means respecting your opponent whether you win or lose."],
+["Cầu thủ đó được khen ngợi vì có tinh thần thể thao cao.", "That player was praised for his great sportsmanship."],
+["Trẻ em nên được dạy tinh thần thể thao từ khi còn nhỏ.", "Children should be taught sportsmanship from a young age."],
+["Chơi thể thao đồng đội vừa giúp giữ sức khỏe vừa xây dựng tinh thần đồng đội.", "Playing team sports helps you keep fit and build team spirit."],
+["Chính phủ nên xây thêm sân thể thao công cộng để người dân cải thiện thể lực.", "The government should build more public sports grounds so that people can improve their physical fitness."]],
+p1:["Do you like playing sports?","What sports are popular in your country?","Did you play any sports at school?","Do you prefer watching sports or playing them?"],
+p2:{t:"Describe a sport you enjoy playing or watching.",b:["what the sport is","how often you play or watch it","who you do it with"],e:"and explain why you enjoy it."},
+p3:["Should professional athletes be paid so much money?","Are competitive sports good for children?","How can governments encourage people to do more exercise?"]},
+{n:"20",en:"People & Relationships",vi:"Con người & Các mối quan hệ",
+v:[["get along with","hòa hợp, hợp tính với","I get along with my classmates very well.","g(et|ets|ot|etting) along"],["close-knit","gắn bó khăng khít","We are a close-knit family."],["role model","hình mẫu lý tưởng","My father has always been my role model."],["peer pressure","áp lực đồng trang lứa","Teenagers often give in to peer pressure."],["look up to","ngưỡng mộ, kính trọng","I really look up to my grandmother."],["see eye to eye","đồng quan điểm","My sister and I don't always see eye to eye.","eye to eye"],["drift apart","dần xa cách","We drifted apart after high school."],["generation gap","khoảng cách thế hệ","The generation gap can cause conflicts at home."]],
+tr:[["Tôi rất hợp với đồng nghiệp ở công ty mới.", "I get along very well with my colleagues at my new company."],
+["Gia đình tôi rất gắn bó, chúng tôi luôn ăn tối cùng nhau.", "My family is very close-knit; we always have dinner together."],
+["Mẹ tôi luôn là hình mẫu lý tưởng của tôi.", "My mother has always been my role model."],
+["Nhiều thanh thiếu niên làm theo bạn bè vì áp lực đồng trang lứa.", "Many teenagers follow their friends because of peer pressure."],
+["Tôi rất hợp với em trai vì chúng tôi có nhiều sở thích chung.", "I get along really well with my younger brother because we share many interests."],
+["Thật khó để hòa hợp với người lúc nào cũng nghĩ mình đúng.", "It is hard to get along with someone who always thinks they are right."],
+["Tôi hòa hợp với hàng xóm và chúng tôi thường giúp đỡ nhau.", "I get along with my neighbours, and we often help each other."],
+["Tôi lớn lên trong một cộng đồng gắn bó, nơi mọi người đều biết nhau.", "I grew up in a close-knit community where everyone knows each other."],
+["Nhóm bạn thân của tôi vẫn rất gắn bó dù không còn học chung trường.", "My group of close friends is still very close-knit, even though we no longer go to the same school."],
+["Các gia đình gắn bó thường có truyền thống ăn cơm cùng nhau.", "Close-knit families often have a tradition of eating meals together."],
+["Cha mẹ nên là hình mẫu tốt cho con cái.", "Parents should be good role models for their children."],
+["Nhiều người trẻ coi người nổi tiếng là hình mẫu của mình.", "Many young people see celebrities as their role models."],
+["Cô giáo chủ nhiệm là hình mẫu mà tôi luôn muốn noi theo.", "My form teacher is a role model that I always want to follow."],
+["Áp lực đồng trang lứa có thể khiến học sinh bắt đầu hút thuốc.", "Peer pressure can lead students to start smoking."],
+["Áp lực đồng trang lứa không phải lúc nào cũng xấu; nó có thể thúc đẩy chúng ta học chăm hơn.", "Peer pressure is not always bad; it can motivate us to study harder."],
+["Mạng xã hội khiến áp lực đồng trang lứa trở nên nặng nề hơn.", "Social media makes peer pressure even stronger."],
+["Tôi luôn ngưỡng mộ ông nội vì sự chăm chỉ của ông.", "I have always looked up to my grandfather because of his hard work."],
+["Trẻ em thường ngưỡng mộ anh chị lớn trong nhà.", "Children often look up to their older brothers and sisters."],
+["Người mà tôi ngưỡng mộ nhất là mẹ tôi.", "The person I look up to most is my mother."],
+["Tôi và bố không phải lúc nào cũng đồng quan điểm về chuyện học hành.", "My father and I don't always see eye to eye about my studies."],
+["Dù không đồng quan điểm, chúng tôi vẫn tôn trọng nhau.", "Although we don't see eye to eye, we still respect each other."],
+["Hai chúng tôi hiếm khi đồng quan điểm về âm nhạc.", "The two of us rarely see eye to eye on music."],
+["Sau khi tốt nghiệp, tôi và bạn thân dần xa cách.", "After graduation, my best friend and I drifted apart."],
+["Bạn bè có thể dần xa cách khi sống ở những thành phố khác nhau.", "Friends can drift apart when they live in different cities."],
+["Tôi không muốn chúng ta dần xa cách chỉ vì quá bận rộn.", "I don't want us to drift apart just because we are too busy."],
+["Khoảng cách thế hệ khiến cha mẹ và con cái khó hiểu nhau.", "The generation gap makes it hard for parents and children to understand each other."],
+["Công nghệ đã làm khoảng cách thế hệ ngày càng lớn.", "Technology has widened the generation gap."],
+["Để thu hẹp khoảng cách thế hệ, các gia đình nên dành thời gian trò chuyện với nhau.", "To narrow the generation gap, families should spend time talking to each other."],
+["Một người bạn tốt là người mà bạn có thể hòa hợp và tin tưởng.", "A good friend is someone you can get along with and trust."],
+["Tôi may mắn vì có một gia đình gắn bó luôn ủng hộ tôi.", "I am lucky to have a close-knit family that always supports me."]],
+p1:["Who is your best friend?","Do you prefer spending time with family or friends?","Is it easy for you to make new friends?","Do you get along well with your neighbours?"],
+p2:{t:"Describe a person who has had a positive influence on you.",b:["who this person is","how you know him or her","what he or she has done for you"],e:"and explain why this person has influenced you so much."},
+p3:["Why do some friendships last longer than others?","How does social media affect relationships?","What causes the generation gap between parents and children?"]}
+];
+const LINK=["however","although","because","moreover","furthermore","on the other hand","for example","for instance","as a result","therefore","whereas","in addition","to be honest","actually","which","while","as well as","in my opinion","personally","so that","not only"];
+const STOP=new Set("the a an and or but to of in on at for with is are was were be been it its this that these those i my me we our you your they their them he she his her do does did have has had not so very really just about from as by can could will would there what when where which who more most some many much also like get go than then into very".split(" "));
+const RANGE={p1:[25,70],p2:[170,300],p3:[50,130]};
+const PNAME={p1:"Part 1",p2:"Part 2",p3:"Part 3"};
+const SPK='<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor"/><path d="M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
+const MIC='<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3" fill="currentColor"/><path d="M6 11a6 6 0 0 0 12 0M12 17v4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
+const KEY="ielts-speak-1120";
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const reOf=v=>{let src=v[3];if(!src){src=v[0].toLowerCase().replace(/^be /,"").split(/\s+/).map(x=>x==="one's"?"\\w+":x.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")+"\\w*").join("\\s+")}return new RegExp("(^|[^a-z])"+src,"i")};
+T.forEach(t=>t.v.forEach(v=>{v.re=reOf(v)}));
+let S={t:0,tab:"tr",i:{},L:{},d:{},done:{},hide:false};
+try{Object.assign(S,JSON.parse(localStorage.getItem(KEY)||"{}"))}catch(e){}
+if(!S.done)S.done={};
+if(!T[S.t])S.t=0;
+let saveT=null;
+function save(){clearTimeout(saveT);saveT=setTimeout(()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}},300)}
+let ai=null,dict=null,tts=null,micOn=false,timer=null,tm={ph:"idle",left:0,tot:0},lastBetter="";
+const topic=()=>T[S.t];
+const list=()=>S.tab==="tr"?topic().tr:S.tab==="p2"?[topic().p2]:topic()[S.tab];
+const idx=()=>Math.min(S.i[S.t+S.tab]||0,list().length-1);
+const key=()=>S.t+"-"+S.tab+"-"+idx();
+const p2q=p=>p.t+" You should say: "+p.b.join("; ")+"; "+p.e;
+const question=()=>S.tab==="p2"?p2q(topic().p2):S.tab==="tr"?topic().tr[idx()][0]:list()[idx()];
+
+function renderTopics(){
+  $("topics").innerHTML=T.map((t,k)=>{const n=t.v.filter((v,j)=>S.L[k+"-"+j]).length;return `<button class="tp${k===S.t?" on":""}" data-topic="${k}" aria-pressed="${k===S.t}"><b>${t.n}</b>${esc(t.vi)}<small>${n}/${t.v.length}</small></button>`}).join("");
+}
+function renderHead(){const t=topic();$("tnum").textContent="Chủ đề "+t.n;$("tname").textContent=t.en;$("tvi").textContent=t.vi}
+function renderVocab(){
+  const t=topic();const got=t.v.filter((v,j)=>S.L[S.t+"-"+j]).length;
+  $("vcount").textContent="Đã thuộc "+got+"/"+t.v.length;
+  $("vlist").className=S.hide?"hidem":"";$("hideM").checked=!!S.hide;
+  $("vlist").innerHTML=t.v.map((v,j)=>{const k=S.t+"-"+j,on=!!S.L[k];return `<li class="${on?"got":""}"><div class="vt"><button class="term" data-ins="${esc(v[0])}" title="Chèn vào câu trả lời">${esc(v[0])}</button><button class="ic" data-say="${esc(v[0])}" aria-label="Nghe phát âm">${SPK}</button><button class="lrn" data-lrn="${k}" aria-pressed="${on}">${on?"Đã thuộc":"Đánh dấu thuộc"}</button></div><div class="vm">${esc(v[1])}</div><p class="ve"><span>${esc(v[2])}</span><button class="ic" data-say="${esc(v[2])}" aria-label="Nghe câu ví dụ">${SPK}</button></p></li>`}).join("");
+}
+function renderTabs(){document.querySelectorAll("#tabs button").forEach(b=>{const on=b.dataset.tab===S.tab;b.classList.toggle("on",on);b.setAttribute("aria-selected",on)})}
+function navHTML(label){const n=list().length;return `<div class="cmeta"><span>${label} ${idx()+1} trên ${n}</span><span class="nav"><button class="nb" data-mv="-1" aria-label="Câu trước">‹</button><button class="nb" data-mv="1" aria-label="Câu sau">›</button></span></div>`}
+function comp(ph,acts){
+  const t=topic();
+  return `<div class="comp"><label class="lab" for="ans">${S.tab==="tr"?"Bản dịch của bạn":"Câu trả lời của bạn"}</label><textarea id="ans" placeholder="${ph}">${esc(S.d[key()]||"")}</textarea><div id="partial" class="partial"></div><div class="crow"><button class="btn mic${micOn?" live":""}" id="mic" data-mic="1" ${dict?"":"hidden"}>${MIC}<span>${micOn?"Đang nghe, chạm để dừng":"Nói để nhập"}</span></button><span id="wc" class="wc"></span></div><div><span class="lab">Gợi ý từ vựng, chạm để chèn</span><div class="chips">${t.v.map(v=>`<button class="chip" data-ins="${esc(v[0])}">${esc(v[0])}</button>`).join("")}</div></div><div class="acts">${acts}</div><div id="out" aria-live="polite"></div></div>`;
+}
+function renderStage(){
+  const t=topic();let h="";
+  if(S.tab==="tr"){
+    const it=t.tr[idx()],kt=t.v.find(v=>v.re.test(it[1]));
+    const done=t.tr.filter((x,j)=>S.done[S.t+"-"+j]).length;
+    h=`<div class="cue">${navHTML("Câu")}<p class="q">${esc(it[0])}</p>${kt?`<p class="hint">Gợi ý: dùng cụm <mark>${esc(kt[0])}</mark></p>`:""}</div><div class="pick"><div class="pickh"><span class="lab" id="donec">Đã làm ${done}/${t.tr.length} câu</span><span class="nav"><button class="btn sm" data-act="rand">Câu ngẫu nhiên</button><button class="btn sm" data-act="next">Câu chưa làm</button></span></div><div class="dots" role="list">${t.tr.map((x,j)=>`<button class="dot${S.done[S.t+"-"+j]?" ok":""}${j===idx()?" cur":""}" data-go="${j}" aria-label="Câu ${j+1}" title="${esc(x[0])}">${j+1}</button>`).join("")}</div></div>`+comp("Gõ bản dịch tiếng Anh của bạn...",`<button class="btn primary" data-act="fb">Kiểm tra bản dịch</button><button class="btn" data-act="ans">Xem đáp án mẫu</button>`);
+  }else if(S.tab==="p2"){
+    const p=t.p2;
+    h=`<div class="p2top"><div class="cue"><div class="cmeta"><span>Thẻ đề Part 2</span><button class="ic" data-act="sayq" aria-label="Nghe đề">${SPK}</button></div><p class="q">${esc(p.t)}</p><p class="say">You should say:</p><ul>${p.b.map(x=>`<li>${esc(x)}</li>`).join("")}</ul><p class="say" style="margin-top:4px">${esc(p.e)}</p></div><div class="timer" id="timer"><div class="tval" id="tval">1:00</div><div class="tbar"><i id="tfill"></i></div><p class="tph" id="tph"></p><div class="tbtns"><button class="btn sm" data-tm="prep">Chuẩn bị 1 phút</button><button class="btn sm" data-tm="talk">Nói 2 phút</button><button class="btn sm" data-tm="stop">Dừng</button></div></div></div><div class="comp"><label class="lab" for="notes">Ghi chú dàn ý (từ khóa)</label><textarea id="notes" placeholder="Ví dụ: Da Lat, cool weather, pine forests, get away from it all...">${esc(S.d[S.t+"-n"]||"")}</textarea></div>`+comp("Gõ hoặc bấm Nói để ghi lại bài nói 1–2 phút của bạn...",acts());
+  }else{
+    h=`<div class="cue">${navHTML("Câu hỏi")}<div class="qrow"><p class="q">${esc(list()[idx()])}</p><button class="ic" data-act="sayq" aria-label="Nghe câu hỏi" style="margin-top:12px;flex:none">${SPK}</button></div></div>`+comp(S.tab==="p1"?"Trả lời 2–4 câu, có lý do hoặc ví dụ...":"Nêu quan điểm, giải thích lý do, đưa ví dụ...",acts());
+  }
+  $("stage").innerHTML=h;updComp();tDraw();
+}
+function acts(){return `<button class="btn primary" data-act="fb">Nhận xét câu trả lời</button><button class="btn" data-act="model" data-ai="1" ${ai?"":"hidden"}>Xem bài mẫu</button>`}
+function renderAll(){renderTopics();renderHead();renderVocab();renderTabs();renderStage()}
+function updComp(){
+  const a=$("ans");if(!a)return;const v=a.value,n=v.trim()?v.trim().split(/\s+/).length:0;
+  let w=n+" từ";if(RANGE[S.tab]){const[lo,hi]=RANGE[S.tab];w+=` (nên ${lo}–${hi})`}
+  $("wc").textContent=w;
+  document.querySelectorAll(".comp .chip").forEach((c,j)=>c.classList.toggle("on",topic().v[j].re.test(v)));
+}
+function ins(term){
+  const a=$("ans");if(!a)return;const s=a.selectionStart??a.value.length,e=a.selectionEnd??s;const pre=a.value.slice(0,s);
+  a.setRangeText((pre&&!/\s$/.test(pre)?" ":"")+term+" ",s,e,"end");a.focus();a.dispatchEvent(new Event("input",{bubbles:true}));
+}
+function say(text){
+  if(!text)return;
+  if(tts){tts.speak(text,{language:"en"}).catch(()=>{});return}
+  try{if("speechSynthesis" in window){speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.lang="en-GB";u.rate=.95;speechSynthesis.speak(u)}}catch(e){}
+}
+function micClick(){
+  if(!dict)return;
+  if(micOn){dict.stop().catch(()=>{});return}
+  dict.start().catch(e=>{if(e&&e.code==="not_granted"){dict=null;document.querySelectorAll("[data-mic]").forEach(b=>b.hidden=true)}});
+}
+function tStart(ph){clearInterval(timer);tm={ph,left:ph==="prep"?60:120,tot:ph==="prep"?60:120};tDraw();timer=setInterval(()=>{tm.left--;if(tm.left<=0){if(tm.ph==="prep"){tStart("talk");return}clearInterval(timer);tm.ph="done"}tDraw()},1000)}
+function tStop(){clearInterval(timer);tm={ph:"idle",left:0,tot:0};tDraw()}
+function tDraw(){
+  const v=$("tval");if(!v)return;const L=tm.ph==="idle"?60:tm.left;
+  v.textContent=Math.floor(L/60)+":"+String(L%60).padStart(2,"0");
+  $("tfill").style.width=(tm.tot?(1-tm.left/tm.tot)*100:0)+"%";
+  $("tph").textContent={idle:"Bạn có 1 phút chuẩn bị, sau đó nói 1–2 phút.",prep:"Đang chuẩn bị: ghi từ khóa vào ô ghi chú bên dưới.",talk:"Đang nói: bấm Nói để nhập, hoặc nói to rồi gõ lại ý chính.",done:"Hết giờ. Bấm Nhận xét câu trả lời để xem đánh giá."}[tm.ph];
+  $("timer").dataset.ph=tm.ph;
+}
+const pj=t=>{const a=t.indexOf("{"),b=t.lastIndexOf("}");return JSON.parse(t.slice(a,b+1))};
+const num=x=>Math.max(0,Math.min(9,+x||0));
+const arr=x=>Array.isArray(x)?x:[];
+function errMsg(e){
+  if(e&&e.code==="not_granted"){ai=null;aiUI()}
+  return `<p class="warn">${e&&e.code==="rate_limited"?"Bạn đang gửi hơi nhanh, chờ một lát rồi thử lại.":"Chưa lấy được nhận xét từ AI, dưới đây là nhận xét nhanh."}</p>`;
+}
+function errsHTML(es){es=arr(es);return es.length?`<h4>Lỗi cần sửa</h4><ul class="errs">${es.map(x=>`<li><span class="wrong">${esc(x.wrong)}</span> → <span class="right">${esc(x.right)}</span><small>${esc(x.why)}</small></li>`).join("")}</ul>`:""}
+function betterHTML(title,text){lastBetter=text;return `<h4>${title}</h4><div class="better"><p>${esc(text)}</p><div class="bb"><button class="btn sm" data-act="sayb">${SPK}Nghe</button><button class="btn sm" data-act="copy">Chép</button></div></div>`}
+function fbHTML(j){
+  const bars=[["Trôi chảy & mạch lạc",j.fc],["Từ vựng",j.lr],["Ngữ pháp",j.gra]].map(([l,v])=>`<div class="bar"><span>${l}</span><div class="track"><i style="width:${num(v)/9*100}%"></i></div><b>${num(v).toFixed(1)}</b></div>`).join("");
+  const vt=arr(j.vocab_try);
+  return `<div class="fb"><div class="fbtop"><div><div class="bnum">${num(j.band).toFixed(1)}</div><div class="blab">Band ước tính</div></div><div class="bars">${bars}</div></div><p class="sum">${esc(j.summary)}</p>${arr(j.strengths).length?`<h4>Điểm tốt</h4><ul>${arr(j.strengths).map(s=>`<li>${esc(s)}</li>`).join("")}</ul>`:""}${errsHTML(j.errors)}${vt.length?`<h4>Từ vựng nên thử</h4><div class="chips">${vt.map(v=>`<button class="chip" data-ins="${esc(v.en)}" title="${esc(v.vi)}">${esc(v.en)} <span style="opacity:.7">(${esc(v.vi)})</span></button>`).join("")}</div>`:""}${j.better?betterHTML("Bản nâng cấp",j.better):""}${j.tip?`<p class="tip"><b>Lần sau:</b> ${esc(j.tip)}</p>`:""}<p class="note">Điểm ước tính từ văn bản, chưa tính phát âm. Hãy nói to bản nâng cấp vài lần để luyện.</p></div>`;
+}
+function quickHTML(txt){
+  const part=S.tab,w=txt.split(/\s+/).filter(Boolean),n=w.length,[lo,hi]=RANGE[part];
+  const used=topic().v.filter(v=>v.re.test(txt)),lk=LINK.filter(l=>new RegExp("\\b"+l+"\\b","i").test(txt));
+  const sents=txt.split(/[.!?]+/).map(s=>s.trim()).filter(Boolean),avg=n/Math.max(1,sents.length);
+  const f={};w.forEach(x=>{x=x.toLowerCase().replace(/[^a-z']/g,"");if(x.length>3&&!STOP.has(x))f[x]=(f[x]||0)+1});
+  const rep=Object.entries(f).filter(([,c])=>c>=3).sort((a,b)=>b[1]-a[1]).slice(0,3);
+  const it=[
+    [n>=lo&&n<=hi,n<lo?`Câu trả lời hơi ngắn (${n} từ). ${PNAME[part]} nên khoảng ${lo}–${hi} từ: thêm lý do và ví dụ.`:n>hi?`Khá dài (${n} từ). ${PNAME[part]} nên gọn trong khoảng ${lo}–${hi} từ.`:`Độ dài phù hợp (${n} từ).`],
+    [used.length>=2,used.length?`Đã dùng ${used.length} cụm từ chủ đề: ${used.map(v=>v[0]).join(", ")}.${used.length<2?" Thử thêm 1–2 cụm nữa.":""}`:"Chưa dùng cụm từ nào của chủ đề. Chạm vào gợi ý để chèn 2–3 cụm."],
+    [lk.length>=2,lk.length?`Từ nối đã dùng: ${lk.join(", ")}.`:"Chưa có từ nối. Thử because, for example, however, to be honest."],
+    [avg>=8&&avg<=25,avg<8?"Câu khá ngắn và rời rạc. Nối ý bằng which, because, although.":avg>25?"Câu rất dài. Tách ý để nói rõ ràng hơn.":"Độ dài câu cân đối."],
+    [!rep.length,rep.length?`Lặp từ: ${rep.map(([x,c])=>x+" ("+c+" lần)").join(", ")}. Thử dùng từ đồng nghĩa.`:"Không lặp từ quá nhiều."]
+  ];
+  return `<div class="fb"><h4>Nhận xét nhanh</h4><ul class="checks">${it.map(([ok,m])=>`<li class="${ok?"ok":"no"}">${esc(m)}</li>`).join("")}</ul><p class="note">Nhận xét tự động đơn giản, chưa có band điểm hay sửa lỗi ngữ pháp.${ai?"":" Mở trang này trong Claude để được chấm chi tiết."}</p></div>`;
+}
+const toks=s=>s.toLowerCase().replace(/[^a-z' ]/g," ").split(/\s+/).filter(w=>w&&!STOP.has(w));
+function trQuick(txt,it){
+  const r=[...new Set(toks(it[1]))],u=toks(txt);
+  const hit=r.filter(w=>u.some(x=>x===w||(w.length>4&&x.slice(0,5)===w.slice(0,5)))).length;
+  const pct=Math.round(hit/Math.max(1,r.length)*100),kt=topic().v.find(v=>v.re.test(it[1]));
+  const items=[[pct>=70,`Khớp ${pct}% từ khóa với đáp án mẫu.${pct<70?" Kiểm tra xem đã đủ ý chưa.":""}`]];
+  if(kt)items.push([kt.re.test(txt),kt.re.test(txt)?`Đã dùng đúng cụm "${kt[0]}".`:`Chưa dùng cụm "${kt[0]}".`]);
+  items.push([/^[A-Z]/.test(txt.trim())&&/[.!?]$/.test(txt.trim()),"Viết hoa đầu câu và có dấu chấm cuối câu."]);
+  return `<div class="fb"><h4>Nhận xét nhanh</h4><ul class="checks">${items.map(([ok,m])=>`<li class="${ok?"ok":"no"}">${esc(m)}</li>`).join("")}</ul>${betterHTML("Đáp án mẫu",it[1])}<p class="note">Bản dịch của bạn có thể khác mà vẫn đúng.${ai?"":" Mở trang trong Claude để được sửa lỗi chi tiết."}</p></div>`;
+}
+function trHTML(j,it){
+  const s=Math.max(0,Math.min(10,+j.score||0));
+  return `<div class="fb"><div class="fbtop"><div><div class="bnum">${s}<span style="font-size:.45em">/10</span></div><div class="blab">Điểm bản dịch</div></div><div><div class="track"><i style="width:${s*10}%"></i></div><p class="sum">${esc(j.verdict)}</p></div></div>${errsHTML(j.errors)}${j.corrected?`<h4>Bản sửa từ câu của bạn</h4><p style="margin:0">${esc(j.corrected)}</p>`:""}${arr(j.alternatives).length?`<h4>Cách nói tự nhiên khác</h4><ul>${arr(j.alternatives).map(a=>`<li>${esc(a)}</li>`).join("")}</ul>`:""}${betterHTML("Đáp án mẫu",it[1])}${j.tip?`<p class="tip"><b>Lưu ý:</b> ${esc(j.tip)}</p>`:""}</div>`;
+}
+function promptSp(txt){
+  const t=topic();
+  return `You are a certified IELTS Speaking examiner who coaches Vietnamese learners.
+Topic: ${t.en}. Part: ${S.tab==="p1"?"Part 1 (short answers)":S.tab==="p2"?"Part 2 (long turn, 1-2 minutes)":"Part 3 (discussion)"}.
+Question: ${question()}
+Topic vocabulary the learner is practising: ${t.v.map(v=>v[0]).join(", ")}.
+Learner's answer (typed, or transcribed from speech, so ignore missing punctuation):
+"""${txt}"""
+Assess it with the public IELTS Speaking band descriptors for Fluency and Coherence, Lexical Resource, and Grammatical Range and Accuracy. Pronunciation cannot be judged from text, so do not score it. Judge length against what is natural for this part. If the answer is off-topic or very short, say so and score accordingly. Be honest, not generous.
+Reply with JSON only, no code fence, in this shape:
+{"band":overall number in steps of 0.5,"fc":number,"lr":number,"gra":number,"summary":"1-2 câu nhận xét tổng quát bằng tiếng Việt","strengths":["tối đa 3 điểm tốt, tiếng Việt"],"errors":[{"wrong":"trích nguyên văn đoạn sai","right":"cách sửa","why":"giải thích ngắn bằng tiếng Việt"}],"vocab_try":[{"en":"cụm từ nên dùng","vi":"nghĩa tiếng Việt"}],"better":"phiên bản nâng cấp band 7.5-8 bằng tiếng Anh, giữ ý của người học, độ dài tự nhiên cho phần thi này","tip":"1 lời khuyên cụ thể bằng tiếng Việt"}
+errors: at most 6, grammar and word choice first. vocab_try: 2-4 items, prefer topic phrases the learner did not use.`;
+}
+function promptTr(txt,it){
+  return `You are an English teacher for Vietnamese IELTS learners.
+Vietnamese sentence: "${it[0]}"
+Reference translation: "${it[1]}"
+Learner's translation: """${txt}"""
+Judge meaning accuracy, grammar and naturalness. Accept any correct, natural translation, not only the reference.
+Reply with JSON only, no code fence:
+{"score":integer 0-10,"verdict":"1 câu nhận xét bằng tiếng Việt","corrected":"bản sửa gần câu của người học nhất mà đúng và tự nhiên","alternatives":["1-2 cách diễn đạt tự nhiên khác"],"errors":[{"wrong":"","right":"","why":"giải thích bằng tiếng Việt"}],"tip":"lưu ý ngắn bằng tiếng Việt về cụm từ chính"}`;
+}
+function promptModel(){
+  const t=topic();
+  return `Write a model IELTS Speaking answer at band 8 for ${PNAME[S.tab]}. Topic: ${t.en}.
+Question: ${question()}
+Use 3-4 of these phrases naturally: ${t.v.map(v=>v[0]).join(", ")}.
+Sound like natural speech from a Vietnamese candidate (contractions and phrases like "to be honest" are fine), with reasons and a personal example.
+Length: ${S.tab==="p1"?"40-60 words":S.tab==="p2"?"220-260 words, covering every bullet point":"90-120 words: opinion, reason, example, and briefly the other side"}.
+Then add one blank line and a line starting "Từ vựng nổi bật:" listing the phrases you used with short Vietnamese meanings, separated by semicolons. No title, no other text.`;
+}
+async function feedback(btn){
+  const a=$("ans"),out=$("out"),txt=a.value.trim();
+  if(!txt){out.innerHTML=`<p class="warn">Hãy viết hoặc nói câu trả lời trước nhé.</p>`;return}
+  const tr=S.tab==="tr",it=tr?topic().tr[idx()]:null;
+  if(tr){S.done[S.t+"-"+idx()]=true;save();const dt=document.querySelector(".dot.cur");if(dt)dt.classList.add("ok");const dc=$("donec");if(dc)dc.textContent="Đã làm "+topic().tr.filter((x,j)=>S.done[S.t+"-"+j]).length+"/"+topic().tr.length+" câu"}
+  if(!ai){out.innerHTML=tr?trQuick(txt,it):quickHTML(txt);return}
+  btn.disabled=true;out.innerHTML=`<p class="wait">Claude đang chấm bài...</p>`;
+  try{const r=await ai(tr?promptTr(txt,it):promptSp(txt));const j=pj(r.text);out.innerHTML=tr?trHTML(j,it):fbHTML(j)}
+  catch(e){out.innerHTML=errMsg(e)+(tr?trQuick(txt,it):quickHTML(txt))}
+  btn.disabled=false;
+}
+async function model(btn){
+  if(!ai)return;const out=$("out");btn.disabled=true;
+  out.innerHTML=`<div class="fb"><h4>Bài mẫu band 8</h4><div class="better"><p class="mtext" id="mtext">Đang viết...</p><div class="bb" id="mbb" hidden><button class="btn sm" data-act="sayb">${SPK}Nghe</button><button class="btn sm" data-act="copy">Chép</button></div></div></div>`;
+  try{const r=await ai(promptModel(),{onText:({text})=>{const m=$("mtext");if(m)m.textContent=text}});const m=$("mtext");if(m)m.textContent=r.text;lastBetter=r.text.split(/Từ vựng nổi bật/)[0].trim();const bb=$("mbb");if(bb)bb.hidden=false}
+  catch(e){out.innerHTML=errMsg(e)}
+  btn.disabled=false;
+}
+function copy(btn){try{navigator.clipboard.writeText(lastBetter).then(()=>{btn.textContent="Đã chép"},()=>{btn.textContent="Không chép được"})}catch(e){btn.textContent="Không chép được"}}
+function aiUI(){
+  document.querySelectorAll("[data-ai]").forEach(b=>b.hidden=!ai);
+  $("ai").textContent=ai?"Nhận xét và bài mẫu do Claude chấm theo tiêu chí IELTS; điểm chỉ mang tính ước tính.":"Đang dùng nhận xét nhanh trên trang. Mở trang trong Claude để được chấm band chi tiết và xem bài mẫu.";
+}
+document.addEventListener("click",e=>{
+  const vm=e.target.closest(".vm");if(vm&&S.hide){vm.parentElement.classList.toggle("show");return}
+  const b=e.target.closest("button");if(!b)return;const d=b.dataset;
+  if(d.topic!=null){S.t=+d.topic;tStop();save();renderAll();return}
+  if(d.tab){S.tab=d.tab;save();renderTabs();renderStage();return}
+  if(d.mv){const n=list().length;S.i[S.t+S.tab]=(idx()+(+d.mv)+n)%n;save();renderStage();return}
+  if(d.go!=null){S.i[S.t+S.tab]=+d.go;save();renderStage();return}
+  if(d.act==="rand"||d.act==="next"){const n=list().length,cur=idx();let pool=[...Array(n).keys()].filter(j=>j!==cur&&!S.done[S.t+"-"+j]);if(d.act==="next"){const a=pool.filter(j=>j>cur);pool=a.length?a.slice(0,1):pool.slice(0,1)}if(!pool.length)pool=[...Array(n).keys()].filter(j=>j!==cur);S.i[S.t+S.tab]=pool[Math.floor(Math.random()*pool.length)];save();renderStage();return}
+  if(d.ins!=null){ins(d.ins);return}
+  if(d.say!=null){say(d.say);return}
+  if(d.lrn!=null){S.L[d.lrn]=!S.L[d.lrn];save();renderVocab();renderTopics();return}
+  if(d.mic){micClick();return}
+  if(d.tm){d.tm==="stop"?tStop():tStart(d.tm);return}
+  if(d.act==="fb")feedback(b);
+  else if(d.act==="model")model(b);
+  else if(d.act==="ans"){$("out").innerHTML=`<div class="fb">${betterHTML("Đáp án mẫu",topic().tr[idx()][1])}<p class="note">Bản dịch của bạn có thể khác mà vẫn đúng. Bấm Kiểm tra bản dịch để được nhận xét.</p></div>`}
+  else if(d.act==="sayq")say(S.tab==="p2"?p2q(topic().p2):list()[idx()]);
+  else if(d.act==="sayb")say(lastBetter);
+  else if(d.act==="copy")copy(b);
+});
+document.addEventListener("input",e=>{
+  if(e.target.id==="ans"){S.d[key()]=e.target.value;save();updComp()}
+  else if(e.target.id==="notes"){S.d[S.t+"-n"]=e.target.value;save()}
+});
+$("hideM").addEventListener("change",e=>{S.hide=e.target.checked;save();renderVocab()});
+renderAll();aiUI();
+const C=window.claude;
+function webDict(){
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR)return null;
+  let r=null,P=()=>{},F=()=>{},St=()=>{};
+  return{onPartial(f){P=f},onFinal(f){F=f},onState(f){St=f},
+    start(){return new Promise((res,rej)=>{try{r=new SR();r.lang="en-US";r.continuous=true;r.interimResults=true;
+      r.onresult=e=>{let p="";for(let i=e.resultIndex;i<e.results.length;i++){const x=e.results[i];if(x.isFinal)F({text:x[0].transcript});else p+=x[0].transcript}P({text:p})};
+      r.onstart=()=>{St({state:"listening"});res()};
+      r.onend=()=>St({state:"idle",reason:"stopped"});
+      r.onerror=ev=>{St({state:"idle",reason:ev.error});if(ev.error==="not-allowed"||ev.error==="service-not-allowed")rej({code:"not_granted"})};
+      r.start()}catch(e){rej(e)}})},
+    stop(){try{if(r)r.stop()}catch(e){}return Promise.resolve()}};
+}
+function setupDict(x){
+  if(!x)return;dict=x;document.querySelectorAll("[data-mic]").forEach(b=>b.hidden=false);
+  try{
+    x.onPartial(({text})=>{const p=$("partial");if(p)p.textContent=text||""});
+    x.onFinal(({text})=>{const a=$("ans");if(a&&text){a.value=(a.value.trim()?a.value.trimEnd()+" ":"")+text.trim();a.dispatchEvent(new Event("input",{bubbles:true}))}const p=$("partial");if(p)p.textContent=""});
+    x.onState(({state})=>{micOn=state==="listening";const b=$("mic");if(b){b.classList.toggle("live",micOn);b.querySelector("span").textContent=micOn?"Đang nghe, chạm để dừng":"Nói để nhập"}});
+  }catch(e){}
+}
+if(C&&C.use){
+  const cap=(n,f)=>{try{C.use(n).then(f,()=>f(null))}catch(e){f(null)}};
+  cap("sample",x=>{if(x){ai=x;aiUI()}});
+  cap("tts",x=>{if(x)tts=x});
+  cap("dictation",x=>setupDict(x||webDict()));
+}else{setupDict(webDict())}
+}
+</script>
+</body>
+</html>
